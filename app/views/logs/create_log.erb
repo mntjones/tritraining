@@ -1,0 +1,14 @@
+<h1>Log Your Training</h1>
+<form action="/logs" method="post">
+  <label>Date</label>
+  <input type="text" name="content" id="content"><br>
+
+  <label>Activities: </label>
+  <p>Choose at least 1 of the activities to save the log: </p><br>
+  <% ["Swim", "Bike", "Run"].each do |act| %>
+    <input type="checkbox" name="activity"><%= act %><br></input>
+  <% end %>
+  <br>
+
+  <input type="submit" value="submit">
+</form>

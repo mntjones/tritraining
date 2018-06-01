@@ -32,3 +32,5 @@
  Total Swim (meters): XX
  Total Bike (meters): XX
  Total Run (meters): XX
+
+ https://theflatironschool.typeform.com/to/B9BrgH

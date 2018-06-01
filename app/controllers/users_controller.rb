@@ -7,10 +7,6 @@ class UsersController < ApplicationController
     set :session_secret, "secret"
   end
 
-	get '/' do
-    erb :welcome
-  end
-
   get '/signup' do
     if logged_in?
       redirect '/logs'
