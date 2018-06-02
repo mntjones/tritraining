@@ -10,6 +10,7 @@ class LogsController < ApplicationController
       redirect '/login'
     else
       @user = current_user
+      @logs = Log.all
       erb :log_list
     end
   end
@@ -23,6 +24,7 @@ class LogsController < ApplicationController
   end
 
   post '/logs' do
+    @user = current_user
     
   end
 
