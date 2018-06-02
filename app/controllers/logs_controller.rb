@@ -50,7 +50,6 @@ class LogsController < ApplicationController
     @log = Log.find(params[:id])
 
     if 
-
     	redirect '/logs/#{@log.id}'
     else
       redirect to "/logs/#{@log.id}/edit"
