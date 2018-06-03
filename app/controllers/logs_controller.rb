@@ -1,3 +1,5 @@
+require 'pry'
+
 class LogsController < ApplicationController
   
   configure do
@@ -25,7 +27,15 @@ class LogsController < ApplicationController
 
   post '/logs' do
     @user = current_user
-    
+    if !params[:date].empty?
+    	log = Log.create(date: params[:date], swim_distance: params[:swim_distance], 
+    		bike_distance: params[:bike_distance], run_distance: params[:run_distance])
+    	log.user = @user
+    	log.save
+    	redirect '/logs'
+    else
+    	redirect '/logs/new'
+    end
   end
 
   get '/logs/:id' do

@@ -1,13 +1,14 @@
 <h1>Log Your Training</h1>
 <form action="/logs" method="post">
   <label>Date</label>
-  <input type="text" name="content" id="content"><br>
+  <input type="text" name="date" id="date" placeholder="YYYY/MM/DD"><br>
 
   <label>Activities: </label>
   <p>Choose at least 1 of the activities to save the log: </p><br>
-  <% ["Swim (m)", "Bike (km)", "Run (km)"].each do |act| %>
-    <input type="checkbox" name="activity"><%= act %></input>
-    <input type="text" name="<% act.downcase %>_distance" placeholder= "Enter Distance">
+  <p>Log SWIM in METERS and <br> BIKE and RUN in KILOMETERS.</p>
+  <% ["Swim", "Bike", "Run"].each do |act| %>
+    <input type="checkbox" name="<%= act.downcase %>"><%= act %></input>
+    <input type="text" name="<%= act.downcase %>_distance" placeholder= "Enter Distance">
   <% end %>
   <br>
 
