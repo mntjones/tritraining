@@ -2,20 +2,20 @@ class UsersController < ApplicationController
    
    configure do
     set :public_folder, 'public'
-    set :views, Proc.new { File.join(root, "../views/users") }
+    set :views, Proc.new { File.join(root, "../views") }
     enable :sessions
     set :session_secret, "secret"
   end
 
   get '/' do
-    erb :'../welcome'
+    erb :welcome
   end
 
   get '/signup' do
     if logged_in?
       redirect '/logs'
     else
-      erb :create_user
+      erb :'/users/create_user'
     end
   end
 
@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     if logged_in?
       redirect '/logs'
     else
-      erb :login
+      erb :'/users/login'
     end
   end
 

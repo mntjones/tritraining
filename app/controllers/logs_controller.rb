@@ -4,7 +4,7 @@ class LogsController < ApplicationController
   
   configure do
     set :public_folder, 'public'
-    set :views, Proc.new { File.join(root, "../views/logs") }
+    set :views, Proc.new { File.join(root, "../views") }
   end
 
 	get '/logs' do
@@ -13,13 +13,13 @@ class LogsController < ApplicationController
     else
       @user = current_user
       @logs = Log.all
-      erb :log_list
+      erb :'/logs/log_list'
     end
   end
 
   get '/logs/new' do
     if logged_in?
-      erb :create_log
+      erb :'/logs/create_log'
     else
       redirect '/login'
     end
@@ -27,8 +27,6 @@ class LogsController < ApplicationController
 
   post '/logs' do
     @user = current_user
-
-    # need to make sure that the date and at least one activity is filled out to create a Log
 
     if params[:date] != ""
     	if params[:swim_distance] = "" && params[:bike_distance] == "" && params[:run_distance] == ""
@@ -68,7 +66,7 @@ class LogsController < ApplicationController
   get '/logs/:id' do
     if logged_in?
       @log = Log.find_by_id(params[:id])
-      erb :show_log
+      erb :'/logs/show_log'
     else
       redirect '/login'
     end
@@ -77,7 +75,7 @@ class LogsController < ApplicationController
   get '/logs/:id/edit' do
     if logged_in?
       @log = Log.find(params[:id])
-      erb :edit_log
+      erb :'/logs/edit_log'
     else
       redirect '/login'
     end
