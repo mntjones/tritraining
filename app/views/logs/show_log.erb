@@ -1,0 +1,19 @@
+
+<h1>Log</h1>
+
+<h2>Date: <%= @log.date %> </h2>
+<br>
+<p>Swim (m): <%= @log.swim_distance%></p>
+<p>Bike (km): <%= @log.bike_distance%></p>
+<p>Run (km): <%= @log.run_distance%></p>
+
+
+<form action="/logs/<%= @log.id %>/delete" method="post">
+  <input id="hidden" type="hidden" name="_method" value="delete">
+  <input type="submit"   value="Delete Log">
+</form>
+
+<form action="/logs/<%= @log.id %>/edit" method="post">
+  <input id="hidden" type="hidden" name="_method" value="patch">
+  <input type="submit" value="Edit Log">
+</form>

@@ -6,7 +6,6 @@ class LogsController < ApplicationController
   configure do
     set :public_folder, 'public'
     set :views, Proc.new { File.join(root, "../views") }
-   # enable :sessions
     use Rack::Flash
   end
 
@@ -38,7 +37,6 @@ class LogsController < ApplicationController
 
     if params[:date] != ""
     	if params[:swim_distance] = "" && params[:bike_distance] == "" && params[:run_distance] == ""
-    		#error message - Please enter at least 1 activity distance!
     		flash[:message] = "Please enter at least 1 activity distance to save."
     		redirect 'logs/new'
     	end
@@ -61,22 +59,23 @@ class LogsController < ApplicationController
     	else
     		log.run_distance = 0
     	end
-
 			
     	log.user = @user
     	log.save
     	flash[:message] = "Log saved Successfully"
     	redirect '/logs'
     else
-    	# error message - Please enter date!
     	flash[:message] = "Please enter a date (YYYY/MM/DD)"
     	redirect '/logs/new'
     end
   end
 
   get '/logs/:id' do
-    if logged_in?
-      @log = Log.find_by_id(params[:id])
+  	@user = current_user
+  	@log = Log.find_by(id: params[:id])
+  	binding.pry
+    if logged_in? && @user == @log.user
+      
       erb :'/logs/show_log'
     else
     	flash[:message] = "You must Log In!"
@@ -97,7 +96,7 @@ class LogsController < ApplicationController
   end
 
   patch '/logs/:id' do
-    @log = Log.find(params[:id])
+    @log = Log.find_by(params[:id])
 
     # NEEDS LOGIC
     if 
@@ -109,9 +108,10 @@ class LogsController < ApplicationController
   end
 
   delete '/logs/:id/delete' do
-    @log = Log.find_by_id(params[:id])
+    @log = Log.find_by(params[:id])
     if @log.user == current_user
       Log.delete(params[:id])
+      flash[:message] = "Log has been deleted."
       redirect '/logs'
     else
     	# error message - You must Log In!
