@@ -1,0 +1,24 @@
+<h1>Edit Your Log</h1>
+
+<% if flash.has?(:message) %>
+    <strong style="color:red;"><%= flash[:message] %></strong>
+  <% end %>
+<br><br>
+<form action="/logs/<%= @log.id %>" method="post">
+  <input  id="hidden" type="hidden" name="_method" value="patch">
+  <label>Date</label>
+  <input type="text" name="date" id="date" value="<%= @log.date %>"><br>
+
+  <label>Activities: </label>
+  <p>Choose at least 1 of the activities to save the log: </p><br>
+
+ 	<label>Swim (m): </label><input type="text" name="swim_distance" value="<%= @log.swim_distance %>"><br>
+ 	<label>Bike (km): </label><input type="text" name="bike_distance" value="<%= @log.bike_distance %>"><br>
+  <label>Run (km): </label><input type="text" name="run_distance" value="<%= @log.run_distance %>">
+
+  <br>
+
+  <input type="submit" value="Edit Log">
+
+
+</form>
