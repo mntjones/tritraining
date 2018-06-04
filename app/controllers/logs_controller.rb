@@ -27,11 +27,32 @@ class LogsController < ApplicationController
 
   post '/logs' do
     @user = current_user
-    if !params[:date].empty?
-    	log = Log.create(date: params[:date], swim_distance: params[:swim_distance], 
-    		bike_distance: params[:bike_distance], run_distance: params[:run_distance])
+
+    # need to make sure that the date and at least one activity is filled out to create a Log
+
+    if params[:date] != ""
+    	log = Log.create(date: params[:date])
+    	if params[:swim_distance] != ""
+    		log.swim_distance = params[:swim_distance]
+    	else
+    		log.swim_distance = 0
+    	end
+
+    	if params[:bike_distance] != ""
+    		log.bike_distance = params[:bike_distance]
+    	else
+    		log.bike_distance = 0
+    	end
+
+    	if params[:run_distance] != ""
+    		log.run_distance = params[:run_distance]
+    	else
+    		log.run_distance = 0
+    	end
+
     	log.user = @user
     	log.save
+    	binding.pry
     	redirect '/logs'
     else
     	redirect '/logs/new'

@@ -6,9 +6,10 @@
   <label>Activities: </label>
   <p>Choose at least 1 of the activities to save the log: </p><br>
   <p>Log SWIM in METERS and <br> BIKE and RUN in KILOMETERS.</p>
+
   <% ["Swim", "Bike", "Run"].each do |act| %>
-    <input type="checkbox" name="<%= act.downcase %>"><%= act %></input>
-    <input type="text" name="<%= act.downcase %>_distance" placeholder= "Enter Distance">
+    
+    <label><%= act %></label><input type="text" name="<%= act.downcase %>_distance" placeholder= "Enter Distance">
   <% end %>
   <br>
 
