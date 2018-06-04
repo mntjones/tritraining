@@ -1,4 +1,9 @@
 <h1>Log Your Training</h1>
+
+<% if flash.has?(:message) %>
+    <strong style="color:red;"><%= flash[:message] %></strong>
+  <% end %>
+<br><br>
 <form action="/logs" method="post">
   <label>Date</label>
   <input type="text" name="date" id="date" placeholder="YYYY/MM/DD"><br>

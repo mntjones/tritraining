@@ -6,13 +6,14 @@ class LogsController < ApplicationController
   configure do
     set :public_folder, 'public'
     set :views, Proc.new { File.join(root, "../views") }
-    enable :sessions
+   # enable :sessions
     use Rack::Flash
   end
 
 	get '/logs' do
     if !logged_in?
     	# error message - You must Log In!
+    	flash[:message] = "You must Log In!"
       redirect '/login'
     else
       @user = current_user
@@ -26,19 +27,23 @@ class LogsController < ApplicationController
       erb :'/logs/create_log'
     else
     	# error message - You must Log In!
+    	flash[:message] = "You must Log In!"
       redirect '/login'
     end
   end
 
   post '/logs' do
+
     @user = current_user
 
     if params[:date] != ""
     	if params[:swim_distance] = "" && params[:bike_distance] == "" && params[:run_distance] == ""
     		#error message - Please enter at least 1 activity distance!
+    		flash[:message] = "Please enter at least 1 activity distance to save."
     		redirect 'logs/new'
     	end
 
+			log = Log.create(date: params[:date])
     	if params[:swim_distance] != ""
     		log.swim_distance = params[:swim_distance]
     	else
@@ -57,13 +62,14 @@ class LogsController < ApplicationController
     		log.run_distance = 0
     	end
 
-			log = Log.create(date: params[:date])
+			
     	log.user = @user
     	log.save
-
+    	flash[:message] = "Log saved Successfully"
     	redirect '/logs'
     else
     	# error message - Please enter date!
+    	flash[:message] = "Please enter a date (YYYY/MM/DD)"
     	redirect '/logs/new'
     end
   end
@@ -73,6 +79,7 @@ class LogsController < ApplicationController
       @log = Log.find_by_id(params[:id])
       erb :'/logs/show_log'
     else
+    	flash[:message] = "You must Log In!"
     	# error message - You must Log In!
       redirect '/login'
     end
@@ -83,6 +90,7 @@ class LogsController < ApplicationController
       @log = Log.find(params[:id])
       erb :'/logs/edit_log'
     else
+    	flash[:message] = "You must Log In!"
     	# error message - You must Log In!
       redirect '/login'
     end
@@ -107,6 +115,7 @@ class LogsController < ApplicationController
       redirect '/logs'
     else
     	# error message - You must Log In!
+    	flash[:message] = "You must Log In!"
       redirect '/login'
     end
   end
