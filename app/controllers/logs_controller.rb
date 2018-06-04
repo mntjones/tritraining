@@ -9,6 +9,7 @@ class LogsController < ApplicationController
 
 	get '/logs' do
     if !logged_in?
+    	# error message - You must Log In!
       redirect '/login'
     else
       @user = current_user
@@ -21,6 +22,7 @@ class LogsController < ApplicationController
     if logged_in?
       erb :'/logs/create_log'
     else
+    	# error message - You must Log In!
       redirect '/login'
     end
   end
@@ -68,6 +70,7 @@ class LogsController < ApplicationController
       @log = Log.find_by_id(params[:id])
       erb :'/logs/show_log'
     else
+    	# error message - You must Log In!
       redirect '/login'
     end
   end
@@ -77,6 +80,7 @@ class LogsController < ApplicationController
       @log = Log.find(params[:id])
       erb :'/logs/edit_log'
     else
+    	# error message - You must Log In!
       redirect '/login'
     end
   end
@@ -84,9 +88,11 @@ class LogsController < ApplicationController
   patch '/logs/:id' do
     @log = Log.find(params[:id])
 
+    # NEEDS LOGIC
     if 
     	redirect '/logs/#{@log.id}'
     else
+
       redirect to "/logs/#{@log.id}/edit"
     end
   end
@@ -97,6 +103,7 @@ class LogsController < ApplicationController
       Log.delete(params[:id])
       redirect '/logs'
     else
+    	# error message - You must Log In!
       redirect '/login'
     end
   end
