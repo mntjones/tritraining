@@ -31,7 +31,11 @@ class LogsController < ApplicationController
     # need to make sure that the date and at least one activity is filled out to create a Log
 
     if params[:date] != ""
-    	log = Log.create(date: params[:date])
+    	if params[:swim_distance] = "" && params[:bike_distance] == "" && params[:run_distance] == ""
+    		#error message - Please enter at least 1 activity distance!
+    		redirect 'logs/new'
+    	end
+
     	if params[:swim_distance] != ""
     		log.swim_distance = params[:swim_distance]
     	else
@@ -50,11 +54,13 @@ class LogsController < ApplicationController
     		log.run_distance = 0
     	end
 
+			log = Log.create(date: params[:date])
     	log.user = @user
     	log.save
-    	binding.pry
+
     	redirect '/logs'
     else
+    	# error message - Please enter date!
     	redirect '/logs/new'
     end
   end
