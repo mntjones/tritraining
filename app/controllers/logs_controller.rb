@@ -1,10 +1,13 @@
 require 'pry'
+require 'rack-flash'
 
 class LogsController < ApplicationController
   
   configure do
     set :public_folder, 'public'
     set :views, Proc.new { File.join(root, "../views") }
+    enable :sessions
+    use Rack::Flash
   end
 
 	get '/logs' do
