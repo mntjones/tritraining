@@ -16,8 +16,14 @@ class LogsController < ApplicationController
       redirect '/login'
     else
       @user = current_user
-      @logs = Log.all
-      binding.pry
+      @logs = []
+ 			
+ 			Log.all.each do |log|
+      	if log.user.username == @user.username
+      	@logs << log
+      	end
+      end
+
       erb :'/logs/log_list'
     end
   end
@@ -74,7 +80,7 @@ class LogsController < ApplicationController
   get '/logs/:id' do
   	@user = current_user
   	@log = Log.find_by(id: params[:id])
-  	binding.pry
+
     if logged_in? && @user == @log.user
       
       erb :'/logs/show_log'
@@ -86,9 +92,10 @@ class LogsController < ApplicationController
   end
 
   get '/logs/:id/edit' do
-
+  	binding.pry
+  	@log = Log.find_by(id: params[:id])
     if logged_in?
-      @log = Log.find_by(params[:id])
+      @log
       erb :'/logs/edit_log'
     else
     	flash[:message] = "You must Log In!"
@@ -98,7 +105,7 @@ class LogsController < ApplicationController
   end
 
   patch '/logs/:id' do
-    @log = Log.find_by(params[:id])
+    @log = Log.find_by(id: params[:id])
 
     if params[:date] != ""
     	if params[:swim_distance] = "" && params[:bike_distance] == "" && params[:run_distance] == ""
@@ -136,7 +143,7 @@ class LogsController < ApplicationController
   end
 
   delete '/logs/:id/delete' do
-    @log = Log.find_by(params[:id])
+    @log = Log.find_by(id: params[:id])
     if @log.user == current_user
       Log.delete(params[:id])
       flash[:message] = "Log has been deleted."

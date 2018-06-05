@@ -9,17 +9,16 @@
 
 <% if !@logs.empty? %>
 	<% @logs.each do |log| %>
-	  <% if log.user.username == @user.username %>
-		  <p>Date: <%= log.date %></p>
-		  <p>Swim: <%= log.swim_distance %> m</p>
-		  <p>Bike: <%= log.bike_distance %> km</p>
-		  <p>Run: <%= log.run_distance %> km</p><br>
 
-			<% swimtotal += log.swim_distance %>
-			<% biketotal += log.bike_distance %>
-			<% runtotal += log.run_distance %>
+	  <p>Date: <%= log.date %></p>
+	  <p>Swim: <%= log.swim_distance %> m</p>
+	  <p>Bike: <%= log.bike_distance %> km</p>
+	  <p>Run: <%= log.run_distance %> km</p><br>
 
-		 <% end %>
+		<% swimtotal += log.swim_distance %>
+		<% biketotal += log.bike_distance %>
+		<% runtotal += log.run_distance %>
+
 	<% end %>
 <% else %>
 	<p>No Logs recorded.</p>
