@@ -73,8 +73,8 @@ class LogsController < ApplicationController
   get '/logs/:id' do
   	@user = current_user
   	@log = Log.find_by(id: params[:id])
-  	binding.pry
-    if logged_in? && @user == @log.user
+  
+    if logged_in? && @user.username == @log.user.username
       
       erb :'/logs/show_log'
     else
@@ -96,13 +96,39 @@ class LogsController < ApplicationController
   end
 
   patch '/logs/:id' do
-    @log = Log.find_by(params[:id])
+    @log = Log.find_by(id: params[:id])
 
-    # NEEDS LOGIC
-    if 
+    if params[:date] != ""
+    	if params[:swim_distance] == "" && params[:bike_distance] == "" && params[:run_distance] == ""
+    		flash[:message] = "Please enter at least 1 activity distance to save."
+    		redirect 'logs/:id/edit'
+    	end
+
+			@log = Log.update(date: params[:date])
+    	if params[:swim_distance] != ""
+    		@log.swim_distance = params[:swim_distance]
+    	else
+    		@log.swim_distance = 0
+    	end
+
+    	if params[:bike_distance] != ""
+    		@log.bike_distance = params[:bike_distance]
+    	else
+    		@log.bike_distance = 0
+    	end
+
+    	if params[:run_distance] != ""
+    		@log.run_distance = params[:run_distance]
+    	else
+    		@log.run_distance = 0
+    	end
+
+    	@log.save
+    	flash[:message] = "Log updated Successfully"
+
     	redirect '/logs/#{@log.id}'
     else
-
+    	flash[:message] = "Enter date to Update"
       redirect to "/logs/#{@log.id}/edit"
     end
   end
