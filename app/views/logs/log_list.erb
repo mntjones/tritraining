@@ -2,6 +2,10 @@
 <h1>Welcome, <%= @user.username %></h1>
 <h2>Training Logs</h2>
 
+<% if flash.has?(:message) %>
+    <strong style="color:red;"><%= flash[:message] %></strong>
+<% end %>
+
 <% swimtotal = 0 %>
 <% biketotal = 0 %>
 <% runtotal = 0 %>

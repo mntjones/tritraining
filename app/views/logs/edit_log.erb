@@ -4,6 +4,7 @@
     <strong style="color:red;"><%= flash[:message] %></strong>
   <% end %>
 <br><br>
+
 <form action="/logs/<%= @log.id %>" method="post">
   <input  id="hidden" type="hidden" name="_method" value="patch">
   <label>Date</label>

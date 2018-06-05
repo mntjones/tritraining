@@ -76,10 +76,14 @@ class LogsController < ApplicationController
     if logged_in? && @user.username == @log.user.username
       
       erb :'/logs/show_log'
-    else
+    elsif !logged_in?
     	flash[:message] = "You must Log In!"
     	# error message - You must Log In!
       redirect '/login'
+    else
+    	flash[:message] = "This log is not yours!"
+    	# error message - You must Log In!
+      redirect '/logs'
     end
   end
 
@@ -101,7 +105,7 @@ class LogsController < ApplicationController
 
     	if params[:swim_distance] == "" && params[:bike_distance] == "" && params[:run_distance] == ""
     		flash[:message] = "Please enter at least 1 activity distance to save."
-    		redirect 'logs/:id/edit'
+    		redirect to "logs/#{@log.id}/edit"
     	end
 
     	if params[:swim_distance] != ""

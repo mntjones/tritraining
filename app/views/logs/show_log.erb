@@ -1,6 +1,10 @@
 
 <h1>Log</h1>
 
+<% if flash.has?(:message) %>
+    <strong style="color:red;"><%= flash[:message] %></strong>
+<% end %>
+
 <h2>Date: <%= @log.date %> </h2>
 <br>
 <p>Swim (m): <%= @log.swim_distance%></p>
@@ -13,7 +17,6 @@
   <input type="submit"   value="Delete Log">
 </form>
 
-<form action="/logs/<%= @log.id %>/edit" method="post">
-  <input id="hidden" type="hidden" name="_method" value="patch">
-  <input type="submit" value="Edit Log">
-</form>
+
+<button><a href="/logs/<%= @log.id %>/edit">Edit Log</button>
+<button><a href="/logs">Log List</a></button>
