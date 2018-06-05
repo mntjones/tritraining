@@ -73,7 +73,6 @@ class LogsController < ApplicationController
   get '/logs/:id' do
   	@user = current_user
   	@log = Log.find_by(id: params[:id])
-  
     if logged_in? && @user.username == @log.user.username
       
       erb :'/logs/show_log'
@@ -86,11 +85,10 @@ class LogsController < ApplicationController
 
   get '/logs/:id/edit' do
     if logged_in?
-      @log = Log.find(params[:id])
+    	@log = Log.find_by(id: params[:id])
       erb :'/logs/edit_log'
     else
     	flash[:message] = "You must Log In!"
-    	# error message - You must Log In!
       redirect '/login'
     end
   end
@@ -99,12 +97,13 @@ class LogsController < ApplicationController
     @log = Log.find_by(id: params[:id])
 
     if params[:date] != ""
+    	@log.date = params[:date]
+
     	if params[:swim_distance] == "" && params[:bike_distance] == "" && params[:run_distance] == ""
     		flash[:message] = "Please enter at least 1 activity distance to save."
     		redirect 'logs/:id/edit'
     	end
 
-			@log = Log.update(date: params[:date])
     	if params[:swim_distance] != ""
     		@log.swim_distance = params[:swim_distance]
     	else
@@ -126,7 +125,7 @@ class LogsController < ApplicationController
     	@log.save
     	flash[:message] = "Log updated Successfully"
 
-    	redirect '/logs/#{@log.id}'
+    	redirect to "/logs/#{@log.id}"
     else
     	flash[:message] = "Enter date to Update"
       redirect to "/logs/#{@log.id}/edit"
