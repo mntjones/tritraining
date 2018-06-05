@@ -16,14 +16,7 @@ class LogsController < ApplicationController
       redirect '/login'
     else
       @user = current_user
-      @logs = []
- 			
- 			Log.all.each do |log|
-      	if log.user.username == @user.username
-      	@logs << log
-      	end
-      end
-
+      @logs = Log.all
       erb :'/logs/log_list'
     end
   end
@@ -43,7 +36,7 @@ class LogsController < ApplicationController
     @user = current_user
 
     if params[:date] != ""
-    	if params[:swim_distance] = "" && params[:bike_distance] == "" && params[:run_distance] == ""
+    	if params[:swim_distance] == "" && params[:bike_distance] == "" && params[:run_distance] == ""
     		flash[:message] = "Please enter at least 1 activity distance to save."
     		redirect 'logs/new'
     	end
@@ -80,7 +73,7 @@ class LogsController < ApplicationController
   get '/logs/:id' do
   	@user = current_user
   	@log = Log.find_by(id: params[:id])
-
+  	binding.pry
     if logged_in? && @user == @log.user
       
       erb :'/logs/show_log'
@@ -92,10 +85,8 @@ class LogsController < ApplicationController
   end
 
   get '/logs/:id/edit' do
-  	binding.pry
-  	@log = Log.find_by(id: params[:id])
     if logged_in?
-      @log
+      @log = Log.find(params[:id])
       erb :'/logs/edit_log'
     else
     	flash[:message] = "You must Log In!"
@@ -105,45 +96,19 @@ class LogsController < ApplicationController
   end
 
   patch '/logs/:id' do
-    @log = Log.find_by(id: params[:id])
+    @log = Log.find_by(params[:id])
 
-    if params[:date] != ""
-    	if params[:swim_distance] = "" && params[:bike_distance] == "" && params[:run_distance] == ""
-    		flash[:message] = "Please enter at least 1 activity distance to save."
-    		redirect 'logs/:id/edit'
-    	end
-
-			@log = Log.update(date: params[:date])
-    	if params[:swim_distance] != ""
-    		@log.swim_distance = params[:swim_distance]
-    	else
-    		@log.swim_distance = 0
-    	end
-
-    	if params[:bike_distance] != ""
-    		@log.bike_distance = params[:bike_distance]
-    	else
-    		@log.bike_distance = 0
-    	end
-
-    	if params[:run_distance] != ""
-    		@log.run_distance = params[:run_distance]
-    	else
-    		@log.run_distance = 0
-    	end
-
-    	@log.save
-    	flash[:message] = "Log updated Successfully"
-
+    # NEEDS LOGIC
+    if 
     	redirect '/logs/#{@log.id}'
     else
-    	flash[:message] = "Enter date to Update"
+
       redirect to "/logs/#{@log.id}/edit"
     end
   end
 
   delete '/logs/:id/delete' do
-    @log = Log.find_by(id: params[:id])
+    @log = Log.find_by(params[:id])
     if @log.user == current_user
       Log.delete(params[:id])
       flash[:message] = "Log has been deleted."
