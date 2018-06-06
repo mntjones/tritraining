@@ -107,7 +107,7 @@ class LogsController < ApplicationController
   patch '/logs/:id' do
     @log = Log.find_by(id: params[:id])
 
-    if params[:date] != ""
+    if params[:date] != "" && !Date._parse(params[:date]).empty?
     	@log.date = params[:date]
 
     	if params[:swim_distance] == "" && params[:bike_distance] == "" && params[:run_distance] == ""
