@@ -16,7 +16,13 @@ class LogsController < ApplicationController
       redirect '/login'
     else
       @user = current_user
-      @logs = Log.all
+      @logs = []
+      Log.all.each do |log|
+      	if log.user.username == @user.username
+      		@logs << log
+      	end
+      end
+      
       erb :'/logs/log_list'
     end
   end
