@@ -1,5 +1,6 @@
 require 'pry'
 require 'rack-flash'
+require 'date'
 
 class LogsController < ApplicationController
   
@@ -22,7 +23,7 @@ class LogsController < ApplicationController
       		@logs << log
       	end
       end
-      
+
       erb :'/logs/log_list'
     end
   end
@@ -41,7 +42,7 @@ class LogsController < ApplicationController
 
     @user = current_user
 
-    if params[:date] != ""
+    if params[:date] != "" && !Date._parse(params[:date]).empty?
     	if params[:swim_distance] == "" && params[:bike_distance] == "" && params[:run_distance] == ""
     		flash[:message] = "Please enter at least 1 activity distance to save."
     		redirect 'logs/new'
