@@ -144,7 +144,7 @@ class LogsController < ApplicationController
   end
 
   delete '/logs/:id/delete' do
-    @log = Log.find_by(params[:id])
+    @log = Log.find_by(id: params[:id])
     if @log.user == current_user
       Log.delete(params[:id])
       flash[:message] = "Log has been deleted."
