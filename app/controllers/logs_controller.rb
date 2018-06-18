@@ -82,10 +82,11 @@ class LogsController < ApplicationController
   end
 
   get '/logs/:id' do
-  	@user = current_user
+  	#@user = current_user
   	@log = Log.find_by(id: params[:id])
-    if logged_in? && @user.username == @log.user.username
+    if logged_in? && current_user.username == @log.user.username
       #checks if current user is logged in and the user matches the log's user
+      
       erb :'/logs/show_log'
     elsif !logged_in?
     	flash[:message] = "You must Log In!"
@@ -100,8 +101,9 @@ class LogsController < ApplicationController
 
   get '/logs/:id/edit' do
   	# check if user is logged in. If so, renders edit page. If not, error message flashes and user redirected to log in.
-    if logged_in?
-    	@log = Log.find_by(id: params[:id])
+
+		@log = Log.find_by(id: params[:id])
+    if logged_in? && current_user.username == @log.user.username
       erb :'/logs/edit_log'
     else
     	flash[:message] = "You must Log In!"
