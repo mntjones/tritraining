@@ -3,6 +3,7 @@ class UsersController < ApplicationController
    configure do
     set :public_folder, 'public'
     set :views, Proc.new { File.join(root, "../views") }
+    # for passwords
     enable :sessions
     set :session_secret, "secret"
   end
@@ -12,6 +13,7 @@ class UsersController < ApplicationController
   end
 
   get '/signup' do
+    # checks if user already logged in - if so, redirect to logs
     if logged_in?
       redirect '/logs'
     else
@@ -21,6 +23,7 @@ class UsersController < ApplicationController
 
   post '/signup' do
     @user = User.new(username: params[:username], password: params[:password], email: params[:email])
+    # if there are valid entries in username, password and email (validated from User Model), then user can be saved.
     if @user.save
       session[:user_id] = @user.id
       redirect '/logs'
@@ -39,7 +42,7 @@ class UsersController < ApplicationController
 
   post '/login' do
     @user = User.find_by(username: params[:username])
-
+    # checks if user exists and the password is authenticated
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
       redirect '/logs'

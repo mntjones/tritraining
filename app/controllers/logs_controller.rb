@@ -18,6 +18,7 @@ class LogsController < ApplicationController
     else
       @user = current_user
       @logs = []
+      # Go through all the logs and move only the logs that belong to the user into the variable: @logs
       Log.all.each do |log|
       	if log.user.username == @user.username
       		@logs << log
@@ -41,13 +42,15 @@ class LogsController < ApplicationController
   post '/logs' do
 
     @user = current_user
-
+    # checking if the date is NOT empty and the Date is in a datetime format
     if params[:date] != "" && !Date._parse(params[:date]).empty?
+    	# checking if all activities are blank - if so, an error message and redirect to new form.
     	if params[:swim_distance] == "" && params[:bike_distance] == "" && params[:run_distance] == ""
     		flash[:message] = "Please enter at least 1 activity distance to save."
     		redirect 'logs/new'
     	end
-
+    	# if there is a date and at least one activity recorded, a new log is created. It checks each activity and either
+    	# saves the entered number or a zero, if blank.
 			log = Log.create(date: params[:date])
     	if params[:swim_distance] != ""
     		log.swim_distance = params[:swim_distance]
@@ -72,6 +75,7 @@ class LogsController < ApplicationController
     	flash[:message] = "Log saved Successfully"
     	redirect '/logs'
     else
+    	# if no date, error message and redirect
     	flash[:message] = "Please enter a date (YYYY/MM/DD)"
     	redirect '/logs/new'
     end
@@ -81,7 +85,7 @@ class LogsController < ApplicationController
   	@user = current_user
   	@log = Log.find_by(id: params[:id])
     if logged_in? && @user.username == @log.user.username
-      
+      #checks if current user is logged in and the user matches the log's user
       erb :'/logs/show_log'
     elsif !logged_in?
     	flash[:message] = "You must Log In!"
@@ -89,12 +93,13 @@ class LogsController < ApplicationController
       redirect '/login'
     else
     	flash[:message] = "This log is not yours!"
-    	# error message - You must Log In!
+    	# error message - Not your log
       redirect '/logs'
     end
   end
 
   get '/logs/:id/edit' do
+  	# check if user is logged in. If so, renders edit page. If not, error message flashes and user redirected to log in.
     if logged_in?
     	@log = Log.find_by(id: params[:id])
       erb :'/logs/edit_log'
